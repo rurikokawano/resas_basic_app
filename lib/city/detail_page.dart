@@ -13,6 +13,7 @@ class CityDetailPage extends StatelessWidget {
       ),
       body: Center(
         child: Text("$cityの詳細画面です"),
+        //test
       ),
     );
   }
