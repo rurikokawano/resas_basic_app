@@ -5,6 +5,8 @@ import 'package:http/http.dart' as http;
 import 'package:resas_basic_app/city/detail_page.dart';
 import 'package:resas_basic_app/env.dart';
 
+import 'city.dart';
+
 class CityListPage extends StatefulWidget {
   const CityListPage({super.key});
 
@@ -65,13 +67,14 @@ class _CityListPageState extends State<CityListPage> {
             case ConnectionState.done:
               final json = jsonDecode(snapshot.data!)['result'] as List;
               final items = json.cast<Map<String, dynamic>>();
+              final citis = items.map(City.fromJson).toList();
 
               return ListView.builder(
-                  itemCount: items.length,
+                  itemCount: citis.length,
                   itemBuilder: (context, index) {
-                    final item = items[index];
+                    final city = citis[index];
                     return listTitleContainer(
-                        item['cityName'] as String, "政令指定都市");
+                        city.cityName, city.cityType.label);
                   }
                   // children: [
                   //   for (final city in cities) listTitleContainer(city, city)
