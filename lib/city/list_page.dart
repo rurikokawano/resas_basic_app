@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import "package:flutter/material.dart";
 import 'package:http/http.dart' as http;
 import 'package:resas_basic_app/city/detail_page.dart';
@@ -74,12 +76,20 @@ class _CityListPageState extends State<CityListPage> {
           switch (snapshot.connectionState) {
             //非同期処置が完了(3秒後)したことを示す
             case ConnectionState.done:
-              return ListView(
-                padding: const EdgeInsets.all(10),
-                children: [
-                  for (final city in cities) listTitleContainer(city, city)
-                ],
-              );
+              final json = jsonDecode(snapshot.data!)['result'] as List;
+              final items = json.cast<Map<String, dynamic>>();
+
+              return ListView.builder(
+                  itemCount: items.length,
+                  itemBuilder: (context, index) {
+                    final item = items[index];
+                    return listTitleContainer(
+                        item['cityName'] as String, "政令指定都市");
+                  }
+                  // children: [
+                  //   for (final city in cities) listTitleContainer(city, city)
+                  // ],
+                  );
             case ConnectionState.none:
             case ConnectionState.waiting:
             case ConnectionState.active:
