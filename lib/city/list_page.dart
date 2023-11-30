@@ -36,21 +36,6 @@ class _CityListPageState extends State<CityListPage> {
 
   @override
   Widget build(BuildContext context) {
-    final cities = [
-      "札幌市",
-      "横浜市",
-      "川崎市",
-      "川崎市",
-      "川崎市",
-      "川崎市",
-      "川崎市",
-      "川崎市",
-      "川崎市",
-      "川崎市",
-      "川崎市",
-      "川崎市",
-      "川崎市"
-    ];
     //component作成
     ListTile listTitleContainer(String title, String subtitle) {
       return ListTile(
@@ -74,7 +59,6 @@ class _CityListPageState extends State<CityListPage> {
         builder: (context, snapshot) {
           print(snapshot.data);
           switch (snapshot.connectionState) {
-            //非同期処置が完了(3秒後)したことを示す
             case ConnectionState.done:
               final json = jsonDecode(snapshot.data!)['result'] as List;
               final items = json.cast<Map<String, dynamic>>();
