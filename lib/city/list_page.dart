@@ -25,9 +25,12 @@ class _CityListPageState extends State<CityListPage> {
     final headers = {
       'X-API-KEY': Env.resasApiKey,
     };
+    final parameters = {
+      "prefCode": "14",
+    };
     _citiesfuture = http
         .get(
-          Uri.https(host, endpoint),
+          Uri.https(host, endpoint, parameters),
           headers: headers,
         )
         .then((res) => res.body);
