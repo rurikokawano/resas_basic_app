@@ -45,13 +45,17 @@ class _CityDetailPageState extends State<CityDetailPage> {
                     as Map<String, dynamic>;
                 final data = result["data"] as List;
                 final items = data.cast<Map<String, dynamic>>();
-                return ListView.builder(
+                return ListView.separated(
                     itemCount: items.length,
+                    separatorBuilder: (contest, index) => const Divider(),
                     itemBuilder: (context, index) {
                       final item = items[index];
                       return ListTile(
                         title: Text(item["year"].toString()),
-                        trailing: Text("${item["value"]}円"),
+                        trailing: Text(
+                          "${item["value"]}円",
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ),
                       );
                     });
               // return Center(
