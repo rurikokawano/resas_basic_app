@@ -45,9 +45,18 @@ class _CityDetailPageState extends State<CityDetailPage> {
                     as Map<String, dynamic>;
                 final data = result["data"] as List;
                 final items = data.cast<Map<String, dynamic>>();
-                return Center(
-                  child: Text(items.toString()),
-                );
+                return ListView.builder(
+                    itemCount: items.length,
+                    itemBuilder: (context, index) {
+                      final item = items[index];
+                      return ListTile(
+                        title: Text(item["year"].toString()),
+                        trailing: Text("${item["value"]}円"),
+                      );
+                    });
+              // return Center(
+              //   child: Text(items.toString()),
+              // );
               case ConnectionState.none:
               case ConnectionState.waiting:
               case ConnectionState.active:
