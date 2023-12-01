@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:resas_basic_app/city/annual_municipality_tax.dart';
 import 'package:resas_basic_app/env.dart';
 
 class CityDetailPage extends StatefulWidget {
@@ -45,20 +46,24 @@ class _CityDetailPageState extends State<CityDetailPage> {
                 final result = jsonDecode(snapshot.data!)["result"]
                     as Map<String, dynamic>;
                 final data = result["data"] as List;
+
                 final items = data.cast<Map<String, dynamic>>();
+                final taxes =
+                    items.map(AnnualMunicipalityTax.fromJson).toList();
                 String formatTaxLabel(int value) {
                   final formatted = NumberFormat("#,###").format(value * 1000);
                   return "$formatted円";
                 }
                 return ListView.separated(
-                    itemCount: items.length,
+                    itemCount: taxes.length,
                     separatorBuilder: (contest, index) => const Divider(),
                     itemBuilder: (context, index) {
-                      final item = items[index];
+                      // final item = items[index];
+                      final tax = taxes[index];
                       return ListTile(
-                        title: Text(item["year"].toString()),
+                        title: Text("${tax.year}年"),
                         trailing: Text(
-                          formatTaxLabel(item["value"] as int),
+                          formatTaxLabel(tax.value),
                           style: Theme.of(context).textTheme.bodyLarge,
                         ),
                       );
