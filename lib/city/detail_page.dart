@@ -1,18 +1,23 @@
 import 'package:flutter/material.dart';
 
-class CityDetailPage extends StatelessWidget {
+class CityDetailPage extends StatefulWidget {
   const CityDetailPage({super.key, required this.city});
 
   final String city;
 
   @override
+  State<CityDetailPage> createState() => _CityDetailPageState();
+}
+
+class _CityDetailPageState extends State<CityDetailPage> {
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(city),
+        title: Text(widget.city),
       ),
       body: Center(
-        child: Text("$cityの詳細画面です"),
+        child: Text("${widget.city}の詳細画面です"),
         //test
       ),
     );
