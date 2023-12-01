@@ -77,6 +77,7 @@ class _CityListPageState extends State<CityListPage> {
                   itemCount: citis.length,
                   itemBuilder: (context, index) {
                     final city = citis[index];
+                    print(city);
                     return listTitleContainer(city);
                   });
 

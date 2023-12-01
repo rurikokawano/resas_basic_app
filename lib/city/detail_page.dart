@@ -52,8 +52,11 @@ class _CityDetailPageState extends State<CityDetailPage> {
                 final data = result["data"] as List;
 
                 final items = data.cast<Map<String, dynamic>>();
-                final taxes =
-                    items.map(AnnualMunicipalityTax.fromJson).toList();
+                final taxes = items
+                    .map(AnnualMunicipalityTax.fromJson)
+                    .toList()
+                    .reversed
+                    .toList();
                 String formatTaxLabel(int value) {
                   final formatted = NumberFormat("#,###").format(value * 1000);
                   return "$formatted円";
