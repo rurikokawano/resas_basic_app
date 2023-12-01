@@ -2,10 +2,9 @@ import 'dart:convert';
 
 import "package:flutter/material.dart";
 import 'package:http/http.dart' as http;
+import 'package:resas_basic_app/city/city.dart';
 import 'package:resas_basic_app/city/detail_page.dart';
 import 'package:resas_basic_app/env.dart';
-
-import 'city.dart';
 
 class CityListPage extends StatefulWidget {
   const CityListPage({super.key});
@@ -42,14 +41,19 @@ class _CityListPageState extends State<CityListPage> {
   @override
   Widget build(BuildContext context) {
     //component作成
-    ListTile listTitleContainer(String title, String subtitle) {
+    ListTile listTitleContainer(City city) {
       return ListTile(
-        title: Text(title),
-        subtitle: Text(subtitle),
+        title: Text(city.cityName),
+        subtitle: Text(city.cityType.label),
         trailing: const Icon(Icons.navigate_next),
         onTap: () {
-          Navigator.of(context).push<void>(MaterialPageRoute(
-              builder: (context) => CityDetailPage(city: title)));
+          Navigator.of(context).push<void>(
+            MaterialPageRoute(
+              builder: (context) => CityDetailPage(
+                city: city,
+              ),
+            ),
+          );
         },
       );
     }
@@ -73,13 +77,9 @@ class _CityListPageState extends State<CityListPage> {
                   itemCount: citis.length,
                   itemBuilder: (context, index) {
                     final city = citis[index];
-                    return listTitleContainer(
-                        city.cityName, city.cityType.label);
-                  }
-                  // children: [
-                  //   for (final city in cities) listTitleContainer(city, city)
-                  // ],
-                  );
+                    return listTitleContainer(city);
+                  });
+
             case ConnectionState.none:
             case ConnectionState.waiting:
             case ConnectionState.active:
