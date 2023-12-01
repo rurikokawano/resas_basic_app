@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:resas_basic_app/env.dart';
 
 class CityDetailPage extends StatefulWidget {
@@ -45,6 +46,10 @@ class _CityDetailPageState extends State<CityDetailPage> {
                     as Map<String, dynamic>;
                 final data = result["data"] as List;
                 final items = data.cast<Map<String, dynamic>>();
+                String formatTaxLabel(int value) {
+                  final formatted = NumberFormat("#,###").format(value * 1000);
+                  return "$formatted円";
+                }
                 return ListView.separated(
                     itemCount: items.length,
                     separatorBuilder: (contest, index) => const Divider(),
@@ -53,7 +58,7 @@ class _CityDetailPageState extends State<CityDetailPage> {
                       return ListTile(
                         title: Text(item["year"].toString()),
                         trailing: Text(
-                          "${item["value"]}円",
+                          formatTaxLabel(item["value"] as int),
                           style: Theme.of(context).textTheme.bodyLarge,
                         ),
                       );
