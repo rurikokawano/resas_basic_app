@@ -42,48 +42,65 @@ class _CityDetailPageState extends State<CityDetailPage> {
       appBar: AppBar(
         title: Text(widget.city.cityName),
       ),
-      body: FutureBuilder<String>(
-          future: _muunicipalityTaxesFuture,
-          builder: (context, snapshot) {
-            switch (snapshot.connectionState) {
-              case ConnectionState.done:
-                final result = jsonDecode(snapshot.data!)["result"]
-                    as Map<String, dynamic>;
-                final data = result["data"] as List;
+      body: Column(
+        children: [
+          //label
+          Container(
+            width: double.infinity,
+            color: Theme.of(context).colorScheme.primaryContainer,
+            child: const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+              child: Text("一人当たり地方税"),
+            ),
+          ),
+          //listview
+          Expanded(
+            child: FutureBuilder<String>(
+                future: _muunicipalityTaxesFuture,
+                builder: (context, snapshot) {
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.done:
+                      final result = jsonDecode(snapshot.data!)["result"]
+                          as Map<String, dynamic>;
+                      final data = result["data"] as List;
 
-                final items = data.cast<Map<String, dynamic>>();
-                final taxes = items
-                    .map(AnnualMunicipalityTax.fromJson)
-                    .toList()
-                    .reversed
-                    .toList();
-                String formatTaxLabel(int value) {
-                  final formatted = NumberFormat("#,###").format(value * 1000);
-                  return "$formatted円";
-                }
-                return ListView.separated(
-                    itemCount: taxes.length,
-                    separatorBuilder: (contest, index) => const Divider(),
-                    itemBuilder: (context, index) {
-                      // final item = items[index];
-                      final tax = taxes[index];
-                      return ListTile(
-                        title: Text("${tax.year}年"),
-                        trailing: Text(
-                          formatTaxLabel(tax.value),
-                          style: Theme.of(context).textTheme.bodyLarge,
-                        ),
-                      );
-                    });
-              // return Center(
-              //   child: Text(items.toString()),
-              // );
-              case ConnectionState.none:
-              case ConnectionState.waiting:
-              case ConnectionState.active:
-            }
-            return const Center(child: CircularProgressIndicator());
-          }),
+                      final items = data.cast<Map<String, dynamic>>();
+                      final taxes = items
+                          .map(AnnualMunicipalityTax.fromJson)
+                          .toList()
+                          .reversed
+                          .toList();
+                      String formatTaxLabel(int value) {
+                        final formatted =
+                            NumberFormat("#,###").format(value * 1000);
+                        return "$formatted円";
+                      }
+                      return ListView.separated(
+                          itemCount: taxes.length,
+                          separatorBuilder: (contest, index) => const Divider(),
+                          itemBuilder: (context, index) {
+                            // final item = items[index];
+                            final tax = taxes[index];
+                            return ListTile(
+                              title: Text("${tax.year}年"),
+                              trailing: Text(
+                                formatTaxLabel(tax.value),
+                                style: Theme.of(context).textTheme.bodyLarge,
+                              ),
+                            );
+                          });
+                    // return Center(
+                    //   child: Text(items.toString()),
+                    // );
+                    case ConnectionState.none:
+                    case ConnectionState.waiting:
+                    case ConnectionState.active:
+                  }
+                  return const Center(child: CircularProgressIndicator());
+                }),
+          ),
+        ],
+      ),
     );
   }
 }
